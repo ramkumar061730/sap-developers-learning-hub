@@ -8,32 +8,170 @@
   <link rel="stylesheet" href="../style.css" />
   <link rel="stylesheet" href="abap.css" />
 </head>
+
 <body>
   <nav class="navbar">
-    <a href="../index.html" class="nav-brand" style="text-decoration:none;"><span class="brand-dot"></span><span class="brand-name">SAP<span class="brand-accent">Hub</span></span></a>
+    <a href="../index.html" class="nav-brand" style="text-decoration:none;">
+      <span class="brand-dot"></span>
+      <span class="brand-name">SAP<span class="brand-accent">Hub</span></span>
+    </a>
     <div class="nav-links"><a href="index.html">← ABAP Course</a></div>
   </nav>
+
   <div class="topic-layout">
     <aside class="topic-sidebar">
       <p class="sidebar-title">// ON THIS PAGE</p>
-      <ul class="sidebar-nav" id="sidebar-links"></ul>
+      <ul class="sidebar-nav">
+        <li><a href="#overview">What is an Internal Table?</a></li>
+        <li><a href="#types">Types of Internal Tables</a></li>
+        <li><a href="#operations">Operations</a></li>
+        <li><a href="#init">CLEAR vs REFRESH vs FREE</a></li>
+        <li><a href="#fae">FOR ALL ENTRIES</a></li>
+        <li><a href="#single-vs-upto">SELECT SINGLE vs UPTO 1 ROWS</a></li>
+        <li><a href="#interview-qa">Interview Q&amp;As</a></li>
+      </ul>
     </aside>
-    <main class="topic-content" id="main-content">
+
+    <main class="topic-content">
       <div class="topic-header">
         <span class="card-tag tag-abap">Topic 02B</span>
         <h1>Internal Tables &amp; Programming</h1>
-        <p>Standard, Sorted, Hashed tables. CRUD operations, FOR ALL ENTRIES, SELECT SINGLE vs UPTO 1 ROWS.</p>
+        <p>Standard, Sorted, Hashed tables — operations, memory handling, and common interview questions.</p>
       </div>
-      <div class="content-section">
-        <div class="callout"><p>📖 Content for this topic is coming soon. Check back shortly as we add the full notes from the course material.</p></div>
-        <p style="color:var(--text-muted); margin-top:1rem;">In the meantime, refer to the <a href="topic-quickref.html" style="color:var(--accent-abap);">Quick Reference Guide</a> for a summary of key concepts.</p>
+
+      <div class="content-section" id="overview">
+        <h2>What is an Internal Table?</h2>
+        <p>An <strong>Internal Table</strong> is a temporary in-memory table (collection of records) that exists only during program execution. Access is done record-by-record.</p>
+        <div class="callout">
+          <p>📌 Internal tables are program-scoped and are destroyed when the program ends.</p>
+        </div>
       </div>
+
+      <div class="content-section" id="types">
+        <h2>Types of Internal Tables</h2>
+
+        <table class="content-table">
+          <tr><th>Feature</th><th>Standard Table</th><th>Sorted Table</th><th>Hashed Table</th></tr>
+          <tr><td>Duplicates</td><td>Accepts duplicates</td><td>May or may not accept</td><td>Does not accept duplicates</td></tr>
+          <tr><td>Key Fields</td><td>Non-unique fields</td><td>At least one unique field</td><td>Must have unique field</td></tr>
+          <tr><td>Insert Keyword</td><td>APPEND</td><td>INSERT</td><td>INSERT (auto-placed)</td></tr>
+          <tr><td>Search Method</td><td>Linear (BINARY SEARCH optional)</td><td>Binary (mandatory)</td><td>Hash algorithm (O(1))</td></tr>
+          <tr><td>Best Use</td><td>General purpose / sequential</td><td>Sorted data / binary searches</td><td>Large tables / key lookups</td></tr>
+        </table>
+      </div>
+
+      <div class="content-section" id="operations">
+        <h2>Operations on Internal Tables</h2>
+
+        <h3>APPEND — Add to end</h3>
+        <div class="code-block">APPEND &lt;wa&gt; TO &lt;it&gt;.
+APPEND LINES OF &lt;it1&gt; TO &lt;it2&gt;.</div>
+
+        <h3>INSERT — Add at position</h3>
+        <div class="code-block">INSERT &lt;wa&gt; INTO &lt;it&gt; INDEX &lt;n&gt;.</div>
+
+        <h3>READ — Retrieve a record</h3>
+        <div class="code-block">READ TABLE &lt;it&gt; INTO &lt;wa&gt; INDEX &lt;n&gt;.
+READ TABLE &lt;it&gt; INTO &lt;wa&gt; WITH KEY &lt;field&gt; = &lt;value&gt;.</div>
+
+        <h3>MODIFY — Update records</h3>
+        <div class="code-block">MODIFY &lt;it&gt; FROM &lt;wa&gt; TRANSPORTING &lt;field&gt; WHERE &lt;condition&gt;.</div>
+
+        <h3>DELETE — Remove records</h3>
+        <div class="code-block">DELETE &lt;it&gt; WHERE &lt;condition&gt;.
+DELETE ADJACENT DUPLICATES FROM &lt;it&gt; COMPARING &lt;field&gt;.</div>
+
+        <h3>LOOP — Iterate records</h3>
+        <div class="code-block">LOOP AT &lt;it&gt; INTO &lt;wa&gt; [WHERE &lt;condition&gt;].
+ENDLOOP.</div>
+
+        <h3>SORT — Sort records</h3>
+        <div class="code-block">SORT &lt;it&gt; BY &lt;field&gt; ASCENDING.
+SORT &lt;it&gt; BY &lt;field&gt; DESCENDING.</div>
+
+        <h3>DESCRIBE TABLE — Count rows</h3>
+        <div class="code-block">DESCRIBE TABLE &lt;it&gt; LINES &lt;lv_lines&gt;.</div>
+      </div>
+
+      <div class="content-section" id="init">
+        <h2>CLEAR vs REFRESH vs FREE</h2>
+
+        <ul>
+          <li><strong>CLEAR &lt;wa|it&gt;</strong>: clears content; <strong>does not</strong> free memory</li>
+          <li><strong>REFRESH &lt;it&gt;</strong>: clears all rows; <strong>does not</strong> free memory allocation</li>
+          <li><strong>FREE &lt;it&gt;</strong>: clears rows <strong>and releases memory</strong> back to system</li>
+        </ul>
+
+        <div class="callout">
+          <p>💡 Use <strong>FREE</strong> when you’re done with a large internal table to reduce memory footprint.</p>
+        </div>
+      </div>
+
+      <div class="content-section" id="fae">
+        <h2>FOR ALL ENTRIES (FAE)</h2>
+        <p>FAE fetches data from a database table for each entry in an internal table (mass SELECT behavior).</p>
+
+        <h3>Rules / Restrictions</h3>
+        <ul>
+          <li>FAE internal table must <strong>not be empty</strong> (check <code>IS INITIAL</code>)</li>
+          <li>Duplicate result rows are removed automatically</li>
+          <li>Cannot use ORDER BY, GROUP BY, HAVING with FAE</li>
+          <li>Must have common fields between internal table and DB table in WHERE</li>
+        </ul>
+
+        <div class="callout">
+          <p>⚠️ Always guard FAE with: <strong>IF itab IS NOT INITIAL.</strong> Otherwise it may return the entire DB table.</p>
+        </div>
+      </div>
+
+      <div class="content-section" id="single-vs-upto">
+        <h2>SELECT SINGLE vs UPTO 1 ROWS</h2>
+
+        <table class="content-table">
+          <tr><th>Feature</th><th>SELECT SINGLE</th><th>UPTO 1 ROWS</th></tr>
+          <tr><td>Key Fields</td><td>Must specify all key fields</td><td>No restriction on WHERE fields</td></tr>
+          <tr><td>Result</td><td>Exactly one record</td><td>First record from result set</td></tr>
+          <tr><td>Performance</td><td>Fastest for unique key access</td><td>Slightly slower (evaluates WHERE)</td></tr>
+          <tr><td>Use Case</td><td>Exact record retrieval by primary key</td><td>When all key fields not available</td></tr>
+        </table>
+      </div>
+
+      <div class="content-section" id="interview-qa">
+        <h2>Interview Q&amp;As</h2>
+
+        <div class="qa-block">
+          <div class="qa-question"><span class="qa-q-label">Q</span>What is an Internal Table? How is it different from a DB table?</div>
+          <div class="qa-answer"><span class="qa-a-label">A</span>An internal table is temporary, in-memory, program-scoped and exists only during execution. A DB table is persistent, stored in the database, accessible system-wide, and needs DB operations for reads/writes.</div>
+        </div>
+
+        <div class="qa-block">
+          <div class="qa-question"><span class="qa-q-label">Q</span>Explain Standard vs Sorted vs Hashed tables (search method).</div>
+          <div class="qa-answer"><span class="qa-a-label">A</span>Standard: linear search (binary optional). Sorted: automatically sorted by key, binary search. Hashed: unique key, O(1) key access via hash algorithm, no index.</div>
+        </div>
+
+        <div class="qa-block">
+          <div class="qa-question"><span class="qa-q-label">Q</span>Difference between CLEAR, REFRESH, and FREE?</div>
+          <div class="qa-answer"><span class="qa-a-label">A</span>CLEAR resets values but doesn’t free memory. REFRESH deletes rows but keeps memory allocation. FREE deletes rows and releases memory back to the system.</div>
+        </div>
+
+        <div class="qa-block">
+          <div class="qa-question"><span class="qa-q-label">Q</span>What is FOR ALL ENTRIES? Key restrictions?</div>
+          <div class="qa-answer"><span class="qa-a-label">A</span>FAE selects DB data based on values in an internal table. The driver table must not be empty; duplicates are removed; ORDER BY/GROUP BY/HAVING aren’t allowed; common fields must exist in WHERE.</div>
+        </div>
+
+        <div class="qa-block">
+          <div class="qa-question"><span class="qa-q-label">Q</span>How do you delete adjacent duplicates?</div>
+          <div class="qa-answer"><span class="qa-a-label">A</span>SORT the table first, then use: <code>DELETE ADJACENT DUPLICATES FROM itab COMPARING field.</code></div>
+        </div>
+      </div>
+
       <div class="topic-nav">
-        <a href="topic-reports.html">← Previous</a>
-        <a href="topic-modularization.html">Next →</a>
+        <a href="topic-reports.html">← Topic 02: Report Programming</a>
+        <a href="topic-oop.html">Next Topic →</a>
       </div>
     </main>
   </div>
+
   <footer class="footer"><span>SAP Learning Hub — Free Forever 🚀</span></footer>
 </body>
 </html>
