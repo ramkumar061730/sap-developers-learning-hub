@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SAP ABAP Basics | SAP Learning Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link
+    href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Sora:wght@300;400;600;700;800&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="abap.css" />
+</head>
+
+<body>
+  <nav class="navbar">
+    <a href="../index.html" class="nav-brand" style="text-decoration:none;">
+      <span class="brand-dot"></span>
+      <span class="brand-name">SAP<span class="brand-accent">Hub</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="index.html">← ABAP Course</a>
+    </div>
+  </nav>
+
+  <div class="topic-layout">
+    <!-- SIDEBAR -->
+    <aside class="topic-sidebar">
+      <p class="sidebar-title">// ON THIS PAGE</p>
+      <ul class="sidebar-nav">
+        <li><a href="#what-is-sap">What is SAP?</a></li>
+        <li><a href="#what-is-abap">What is ABAP?</a></li>
+        <li><a href="#key-components">Key Components</a></li>
+        <li><a href="#r3-architecture">R/3 Architecture</a></li>
+        <li><a href="#sap-messages">SAP Messages</a></li>
+        <li><a href="#client-data">Client Data Types</a></li>
+        <li><a href="#why-abap">Why ABAP?</a></li>
+        <li><a href="#interview-qa">Interview Q&amp;As</a></li>
+      </ul>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <main class="topic-content">
+      <div class="topic-header">
+        <span class="card-tag tag-abap">Topic 00</span>
+        <h1>SAP ABAP Basics</h1>
+        <p>Foundational concepts every SAP developer must know — from what SAP is, to architecture, messages, and why
+          ABAP exists.</p>
+      </div>
+
+      <!-- What is SAP -->
+      <div class="content-section" id="what-is-sap">
+        <h2>1. What is SAP?</h2>
+        <p>SAP stands for <strong>System Applications and Products in Data Processing</strong>. It is a German company
+          founded in 1972 by five former IBM employees (Wellenreuther, Hopp, Hector, Plattner, and Tschira).</p>
+        <p>SAP is known as <strong>ERP software</strong> because it integrates all key business functions — finance,
+          logistics, HR, and sales — into a single system, enabling real-time data sharing across departments.</p>
+        <h3>Advantages of SAP</h3>
+        <ul>
+          <li>Eliminates duplicate data</li>
+          <li>Business processes are standardized</li>
+          <li>Real-time data access across all departments</li>
+          <li>Supports decision-making with accurate, integrated data</li>
+          <li>Scalability for large enterprises</li>
+          <li>Multi-language and multi-currency support</li>
+        </ul>
+      </div>
+
+      <!-- What is ABAP -->
+      <div class="content-section" id="what-is-abap">
+        <h2>2. What is ABAP?</h2>
+        <p>ABAP stands for <strong>Advanced Business Application Programming</strong>. It is a fourth-generation
+          programming language (4GL) used for development and customization in the SAP software environment.</p>
+        <div class="callout">
+          <p>💡 ABAP is SAP's proprietary programming language, used to build custom applications on top of the SAP
+            platform — reports, interfaces, forms, enhancements (RICEF/W).</p>
+        </div>
+        <h3>RICEF/W — Primary ABAP Development Objects</h3>
+        <ul>
+          <li><strong>R</strong>eports — Custom reports for business users</li>
+          <li><strong>I</strong>nterfaces — Data exchange between SAP and external systems</li>
+          <li><strong>C</strong>onversions — Data migration from legacy systems</li>
+          <li><strong>E</strong>nhancements — Extending standard SAP functionality</li>
+          <li><strong>F</strong>orms — Output documents like invoices, POs</li>
+          <li><strong>W</strong>orkflow — Automated business process routing</li>
+        </ul>
+      </div>
+
+      <!-- Key Components -->
+      <div class="content-section" id="key-components">
+        <h2>3. Key SAP Components</h2>
+        <table class="content-table">
+          <tr>
+            <th>Component</th>
+            <th>Full Name</th>
+            <th>Purpose</th>
+          </tr>
+          <tr>
+            <td>ECC</td>
+            <td>SAP ERP Central Component</td>
+            <td>Core ERP with FI, CO, MM, SD, PP, HR modules. Predecessor to S/4HANA.</td>
+          </tr>
+          <tr>
+            <td>GTS</td>
+            <td>Global Trade Services</td>
+            <td>Manages import/export trade processes in SAP ERP.</td>
+          </tr>
+          <tr>
+            <td>ERP</td>
+            <td>Enterprise Resource Planning</td>
+            <td>Manages day-to-day business: accounting, project management, risk, etc.</td>
+          </tr>
+          <tr>
+            <td>S/4HANA</td>
+            <td>SAP S/4HANA</td>
+            <td>Next-gen ERP built on HANA in-memory database.</td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- R/3 Architecture -->
+      <div class="content-section" id="r3-architecture">
+        <h2>4. SAP R/3 — 3-Tier Architecture</h2>
+        <p>SAP R/3 means <strong>Real-time Data Processing</strong> (R = Real-time). It follows a 3-tier architecture:
+        </p>
+        <table class="content-table">
+          <tr>
+            <th>Layer</th>
+            <th>Role</th>
+            <th>What Runs Here</th>
+          </tr>
+          <tr>
+            <td>Presentation Layer</td>
+            <td>User Interaction</td>
+            <td>SAP GUI, web browser, mobile device — any input device communicating with the end-user</td>
+          </tr>
+          <tr>
+            <td>Application Layer</td>
+            <td>Business Logic</td>
+            <td>ABAP programs are executed here; work processes (dialog, background, update, spool, enqueue) run here
+            </td>
+          </tr>
+          <tr>
+            <td>Database Layer</td>
+            <td>Data Persistence</td>
+            <td>Stores all data: ERP data, program metadata, configuration; optimized for performance and security</td>
+          </tr>
+        </table>
+        <div class="callout">
+          <p>💡 The 3-tier model separates concerns for scalability, performance, and security. Application and Database
+            layers run on servers; only the Presentation layer is on the user's machine.</p>
+        </div>
+      </div>
+
+      <!-- SAP Messages -->
+      <div class="content-section" id="sap-messages">
+        <h2>5. Types of SAP Messages</h2>
+        <table class="content-table">
+          <tr>
+            <th>Code</th>
+            <th>Type</th>
+            <th>Description</th>
+          </tr>
+          <tr>
+            <td><code>A</code></td>
+            <td>ABEND (Termination)</td>
+            <td>Terminates the program immediately. <strong>Most severe.</strong></td>
+          </tr>
+          <tr>
+            <td><code>I</code></td>
+            <td>Information</td>
+            <td>Displays information to the user; processing continues.</td>
+          </tr>
+          <tr>
+            <td><code>E</code></td>
+            <td>Error</td>
+            <td>Stops processing; user must correct the error before continuing.</td>
+          </tr>
+          <tr>
+            <td><code>S</code></td>
+            <td>Status</td>
+            <td>Displays a status message in the status bar; processing continues.</td>
+          </tr>
+          <tr>
+            <td><code>W</code></td>
+            <td>Warning</td>
+            <td>Alerts the user but allows processing to continue.</td>
+          </tr>
+          <tr>
+            <td><code>X</code></td>
+            <td>Runtime Error</td>
+            <td>Causes a short dump (runtime error / ST22).</td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- Client Data -->
+      <div class="content-section" id="client-data">
+        <h2>6. Client Dependent vs Client Independent Data</h2>
+        <table class="content-table">
+          <tr>
+            <th>Type</th>
+            <th>Description</th>
+            <th>Examples</th>
+          </tr>
+          <tr>
+            <td><strong>Client Dependent</strong></td>
+            <td>Data specific to an individual client. Changes affect only that client.</td>
+            <td>Business data, Customizing settings, Master data</td>
+          </tr>
+          <tr>
+            <td><strong>Client Independent</strong></td>
+            <td>Shared across all clients in the system. Changes affect the entire SAP landscape.</td>
+            <td>ABAP programs, Function Modules, Repository objects</td>
+          </tr>
+        </table>
+      </div>
+
+      <!-- Why ABAP -->
+      <div class="content-section" id="why-abap">
+        <h2>7. Why is ABAP Development Needed?</h2>
+        <p>Standard SAP covers ~80% of business needs. The remaining 20% requires custom development. ABAP allows
+          developers to:</p>
+        <ul>
+          <li>Create custom reports for end-users to easily access data</li>
+          <li>Build interfaces for data exchange with external systems</li>
+          <li>Migrate legacy data into SAP (conversions)</li>
+          <li>Enhance standard SAP without modifying core code (user exits, BADIs)</li>
+          <li>Generate output forms (invoices, delivery notes)</li>
+          <li>Automate business processes via Workflow</li>
+        </ul>
+      </div>
+
+      <!-- Interview Q&A -->
+      <div class="content-section" id="interview-qa">
+        <h2>Interview Q&amp;As</h2>
+
+        <div class="qa-block">
+          <div class="qa-question"><span class="qa-q-label">Q</span>What does SAP stand for and when was it founded?
+          </div>
+          <div class="qa-answer"><span class="qa-a-label">A</span>SAP stands for System Applications and Products in
+            Data Processing. It was founded in 1972 by five former IBM employees (Wellenreuther, Hopp, Hector, Plattner,
+            and Tschira) in Mannheim, Germany.</div>
+        </div>
+
+        <div class="qa-block">
+          <div class="qa-question"><span class="qa-q-label">Q</span>What is ABAP and why is it used?</div>
+          <div class="qa-answer"><span class="qa-a-label">A</span>ABAP (Advanced Business Application Programming) is
+            SAP's proprietary 4th generation programming language (4GL). It is used to develop custom programs, reports,
+            interfaces, forms, and enhancements on the SAP platform. It allows developers to extend standard SAP
+            functionality to meet specific business requirements.</div>
+        </div>
+
+        <div class="qa-block">
+          <div class="qa-question"><span class="qa-q-label">Q</span>What are the three layers of SAP R/3 architecture?
+          </div>
+          <div class="qa-answer"><span class="qa-a-label">A</span>1) Presentation Layer — handles user interaction
+            (GUI/browser/mobile). 2) Application Layer — contains business logic, processes ABAP programs; this is where
+            work processes run. 3) Database Layer — stores all data persistently (ERP data, program metadata,
+            configuration). The three-tier model separates concerns for scalability, performance, and security.</div>
+        </div>
+
+        <div class="qa-block">
+          <div class="qa-question"><span class="qa-q-label">Q</span>What is the difference between client-dependent and
+            client-independent data?</div>
+          <div class="qa-answer"><span class="qa-a-label">A</span>Client-dependent data exists per client — changes in
+            one client do not affect others (e.g., business data, customizing). Client-independent data is shared across
+            all clients in the SAP system (e.g., ABAP programs, function modules, repository objects). Any change to
+            client-independent data impacts all clients.</div>
+        </div>
+
+        <div class="qa-block">
+          <div class="qa-question"><span class="qa-q-label">Q</span>What are the six types of SAP messages? Which is the
+            most severe?</div>
+          <div class="qa-answer"><span class="qa-a-label">A</span>A (Abend/Termination — most severe), I (Information),
+            E (Error), S (Status), W (Warning), X (Runtime Error causing short dump). The most severe is type 'A' as it
+            immediately terminates the program.</div>
+        </div>
+
+        <div class="qa-block">
+          <div class="qa-question"><span class="qa-q-label">Q</span>What does RICEF/W stand for in SAP?</div>
+          <div class="qa-answer"><span class="qa-a-label">A</span>Reports (custom reports), Interfaces (data exchange
+            between systems), Conversions (data migration from legacy systems), Enhancements (extending standard SAP),
+            Forms (output documents like invoices), Workflow (automated business process routing). These are the primary
+            development objects in SAP ABAP.</div>
+        </div>
+
+      </div>
+
+      <!-- Bottom nav -->
+      <div class="topic-nav">
+        <a href="index.html">← All Topics</a>
+        <a href="topic-ddic.html">Topic 01: DDIC →</a>
+      </div>
+
+    </main>
+  </div>
+
+  <footer class="footer">
+    <span>SAP Learning Hub — Free Forever 🚀</span>
+  </footer>
+</body>
+
+</html>

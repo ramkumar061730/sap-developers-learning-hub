@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Quick Reference Guide | SAP Learning Hub</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Sora:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="abap.css" />
+</head>
+<body>
+  <nav class="navbar">
+    <a href="../index.html" class="nav-brand" style="text-decoration:none;"><span class="brand-dot"></span><span class="brand-name">SAP<span class="brand-accent">Hub</span></span></a>
+    <div class="nav-links"><a href="index.html">← ABAP Course</a></div>
+  </nav>
+
+  <div class="topic-layout">
+    <aside class="topic-sidebar">
+      <p class="sidebar-title">// ON THIS PAGE</p>
+      <ul class="sidebar-nav">
+        <li><a href="#tcodes">Transaction Codes</a></li>
+        <li><a href="#keywords">Key ABAP Keywords</a></li>
+        <li><a href="#sysfields">System Fields</a></li>
+        <li><a href="#table-types">Table Types</a></li>
+        <li><a href="#message-types">Message Types</a></li>
+        <li><a href="#ricef">RICEF/W Objects</a></li>
+      </ul>
+    </aside>
+
+    <main class="topic-content">
+      <div class="topic-header">
+        <span class="card-tag tag-abap">Quick Ref</span>
+        <h1>Quick Reference Guide</h1>
+        <p>Your go-to cheatsheet for all key SAP ABAP transaction codes, keywords, system fields, and patterns.</p>
+      </div>
+
+      <div class="content-section" id="tcodes">
+        <h2>Transaction Codes</h2>
+        <table class="content-table">
+          <tr><th>T-Code</th><th>Purpose</th></tr>
+          <tr><td>SE11</td><td>ABAP Data Dictionary (DDIC)</td></tr>
+          <tr><td>SE38</td><td>ABAP Editor — Write/Edit Programs</td></tr>
+          <tr><td>SE37</td><td>Function Builder — Function Modules</td></tr>
+          <tr><td>SE80</td><td>Object Navigator — All ABAP objects</td></tr>
+          <tr><td>SE24</td><td>Class Builder — OOP Classes</td></tr>
+          <tr><td>SE51</td><td>Screen Painter — Module Pool Screens</td></tr>
+          <tr><td>SM30</td><td>View Maintenance (Table Maintenance)</td></tr>
+          <tr><td>SM31</td><td>Table Maintenance Entry</td></tr>
+          <tr><td>ST22</td><td>ABAP Runtime Error (Short Dump) Analysis</td></tr>
+          <tr><td>SU01</td><td>User Maintenance</td></tr>
+          <tr><td>SEGW</td><td>SAP Gateway Builder — OData Services</td></tr>
+          <tr><td>STRUST</td><td>Trust Manager — SSL Certificates</td></tr>
+          <tr><td>SE16/SE16N</td><td>Data Browser — Table Contents</td></tr>
+          <tr><td>SE91</td><td>Message Class Maintenance</td></tr>
+          <tr><td>SFP</td><td>Adobe Form Builder</td></tr>
+          <tr><td>SHDB</td><td>BDC Transaction Recorder</td></tr>
+          <tr><td>LSMW</td><td>Legacy System Migration Workbench</td></tr>
+        </table>
+      </div>
+
+      <div class="content-section" id="keywords">
+        <h2>Key ABAP Keywords</h2>
+        <div class="code-block">" ---- DATA DECLARATIONS ----
+DATA: lv_name TYPE string.
+DATA: lt_table TYPE TABLE OF mara.
+DATA: ls_line  TYPE mara.
+
+" ---- SELECT STATEMENTS ----
+SELECT * FROM mara INTO TABLE lt_table WHERE matnr = lv_matnr.
+SELECT SINGLE matnr mtart FROM mara INTO ls_line WHERE matnr = lv_matnr.
+SELECT matnr mtart FROM mara UP TO 1 ROWS INTO TABLE lt_table.
+
+" ---- INTERNAL TABLE OPERATIONS ----
+APPEND ls_line TO lt_table.
+READ TABLE lt_table INTO ls_line WITH KEY matnr = '100'.
+LOOP AT lt_table INTO ls_line.
+  " ... process
+ENDLOOP.
+SORT lt_table BY matnr ASCENDING.
+DELETE lt_table WHERE matnr = ''.
+CLEAR ls_line.
+REFRESH lt_table.
+FREE lt_table.
+
+" ---- MODULARIZATION ----
+PERFORM form_name USING param1 CHANGING param2.
+CALL FUNCTION 'FM_NAME' EXPORTING p1 = v1 IMPORTING p2 = v2 EXCEPTIONS error = 1.
+
+" ---- OOP ----
+DATA lo_obj TYPE REF TO zcl_myclass.
+CREATE OBJECT lo_obj.
+CALL METHOD lo_obj->my_method EXPORTING iv_param = lv_val.
+lo_obj->my_method( iv_param = lv_val ).  " Modern syntax</div>
+      </div>
+
+      <div class="content-section" id="sysfields">
+        <h2>Important System Fields (SY-)</h2>
+        <table class="content-table">
+          <tr><th>Field</th><th>Meaning</th></tr>
+          <tr><td>SY-SUBRC</td><td>Return code (0 = success)</td></tr>
+          <tr><td>SY-TABIX</td><td>Current index in an internal table loop</td></tr>
+          <tr><td>SY-DBCNT</td><td>Number of rows processed by last DB operation</td></tr>
+          <tr><td>SY-UNAME</td><td>Current logged-in user name</td></tr>
+          <tr><td>SY-DATUM</td><td>Current system date (YYYYMMDD)</td></tr>
+          <tr><td>SY-UZEIT</td><td>Current system time (HHMMSS)</td></tr>
+          <tr><td>SY-MANDT</td><td>Current client number</td></tr>
+          <tr><td>SY-REPID</td><td>Name of the current program</td></tr>
+          <tr><td>SY-TCODE</td><td>Current transaction code</td></tr>
+          <tr><td>SY-MSGID</td><td>Message class</td></tr>
+          <tr><td>SY-MSGNO</td><td>Message number</td></tr>
+        </table>
+      </div>
+
+      <div class="content-section" id="table-types">
+        <h2>Internal Table Types</h2>
+        <table class="content-table">
+          <tr><th>Type</th><th>Access</th><th>Duplicates</th><th>Use Case</th></tr>
+          <tr><td>Standard Table</td><td>Index + Key (linear search)</td><td>Allowed</td><td>General purpose; small to medium tables</td></tr>
+          <tr><td>Sorted Table</td><td>Binary search (fast key access)</td><td>Optional</td><td>Large tables; frequent key-based reads</td></tr>
+          <tr><td>Hashed Table</td><td>Hash key only (O(1))</td><td>Not allowed</td><td>Very large tables; unique key lookups only</td></tr>
+        </table>
+      </div>
+
+      <div class="content-section" id="message-types">
+        <h2>SAP Message Types</h2>
+        <table class="content-table">
+          <tr><th>Code</th><th>Type</th><th>Effect</th></tr>
+          <tr><td>A</td><td>Abend</td><td>Program terminates immediately (most severe)</td></tr>
+          <tr><td>E</td><td>Error</td><td>Processing stops; user must fix the error</td></tr>
+          <tr><td>W</td><td>Warning</td><td>Alert shown; processing can continue</td></tr>
+          <tr><td>I</td><td>Information</td><td>Info dialog; processing continues</td></tr>
+          <tr><td>S</td><td>Status</td><td>Message in status bar; processing continues</td></tr>
+          <tr><td>X</td><td>Exit/Dump</td><td>Short dump (runtime error)</td></tr>
+        </table>
+      </div>
+
+      <div class="content-section" id="ricef">
+        <h2>RICEF/W — SAP Development Objects</h2>
+        <table class="content-table">
+          <tr><th>Letter</th><th>Object</th><th>Description</th></tr>
+          <tr><td>R</td><td>Reports</td><td>Custom reports (classical, interactive, ALV)</td></tr>
+          <tr><td>I</td><td>Interfaces</td><td>Data exchange with external systems (IDocs, RFCs, APIs)</td></tr>
+          <tr><td>C</td><td>Conversions</td><td>Data migration from legacy systems (BDC, LSMW)</td></tr>
+          <tr><td>E</td><td>Enhancements</td><td>Extending standard SAP (User Exits, BADIs, Implicit/Explicit Enhancements)</td></tr>
+          <tr><td>F</td><td>Forms</td><td>Output documents (Adobe Forms, SmartForms, SAPscript)</td></tr>
+          <tr><td>W</td><td>Workflow</td><td>Automated business process routing and approvals</td></tr>
+        </table>
+      </div>
+
+      <div class="topic-nav">
+        <a href="topic-amdp.html">← Topic 09: AMDP</a>
+        <a href="index.html">↑ All Topics</a>
+      </div>
+    </main>
+  </div>
+
+  <footer class="footer"><span>SAP Learning Hub — Free Forever 🚀</span></footer>
+</body>
+</html>

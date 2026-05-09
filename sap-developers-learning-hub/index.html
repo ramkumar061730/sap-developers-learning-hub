@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SAP Learning Hub — Zero to Hero</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Sora:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <div class="nav-brand">
+      <span class="brand-dot"></span>
+      <span class="brand-name">SAP<span class="brand-accent">Hub</span></span>
+    </div>
+    <div class="nav-links">
+      <a href="#courses">Courses</a>
+      <a href="#about">About</a>
+    </div>
+    <div class="nav-search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" id="searchInput" placeholder="Search topics..." onkeyup="filterCourses()" />
+    </div>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-grid-bg"></div>
+    <div class="hero-content">
+      <div class="hero-badge">// FREE FOREVER</div>
+      <h1 class="hero-title">
+        Master <span class="gradient-text">SAP</span><br />
+        from Zero to Hero
+      </h1>
+      <p class="hero-subtitle">
+        Structured notes, interview Q&amp;As, and step-by-step sessions —<br />
+        all in one place. No fluff, just what you need.
+      </p>
+
+      <div class="stats-row">
+        <div class="stat-item">
+          <span class="stat-number" id="totalCourses">2</span>
+          <span class="stat-label">COURSES</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-number">12</span>
+          <span class="stat-label">TOPICS</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-number">100+</span>
+          <span class="stat-label">INTERVIEW Q&amp;As</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <span class="stat-number">∞</span>
+          <span class="stat-label">FREE FOREVER</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COURSES SECTION -->
+  <section class="courses-section" id="courses">
+    <div class="section-header">
+      <span class="section-label">// ALL COURSES</span>
+    </div>
+
+    <div class="filter-bar">
+      <button class="filter-btn active" onclick="filterByTag('all', this)">All</button>
+      <button class="filter-btn" onclick="filterByTag('abap', this)">ABAP</button>
+      <button class="filter-btn" onclick="filterByTag('cpi', this)">CPI / Integration</button>
+      <button class="filter-btn" onclick="filterByTag('oop', this)">OOP</button>
+      <button class="filter-btn" onclick="filterByTag('fiori', this)">Fiori / UI5</button>
+    </div>
+
+    <div class="courses-grid" id="coursesGrid">
+
+      <!-- COURSE 1: SAP ABAP -->
+      <div class="course-card" data-tags="abap oop" data-title="SAP ABAP Complete Guide">
+        <div class="card-tag tag-abap">SAP ABAP</div>
+        <h2 class="card-title">SAP ABAP<br/>Complete Guide</h2>
+        <p class="card-sub gradient-text-abap">Zero to Hero</p>
+        <p class="card-desc">Complete ABAP notes with DDIC, Reports, Modularization, OOP, OData, CDS, AMDP — plus 100+ interview Q&amp;As for job prep.</p>
+        <div class="card-tags-row">
+          <span class="tag">DDIC</span>
+          <span class="tag">Reports</span>
+          <span class="tag">OOP</span>
+          <span class="tag">OData</span>
+          <span class="tag">CDS</span>
+        </div>
+        <a href="abap/index.html" class="card-btn">Start Learning →</a>
+      </div>
+
+      <!-- COURSE 2: SAP CPI (Coming Soon) -->
+      <div class="course-card coming-soon" data-tags="cpi" data-title="SAP CPI Integration">
+        <div class="card-tag tag-cpi">SAP CPI</div>
+        <h2 class="card-title">SAP Integration<br/>Suite (CPI)</h2>
+        <p class="card-sub gradient-text-cpi">Zero to Hero</p>
+        <p class="card-desc">iFlows, Adapters, Groovy Scripts, Value Mappings, Error Handling, Security, API Management and more — coming soon.</p>
+        <div class="card-tags-row">
+          <span class="tag">iFlows</span>
+          <span class="tag">Groovy</span>
+          <span class="tag">SFTP</span>
+          <span class="tag">REST/SOAP</span>
+          <span class="tag">API</span>
+        </div>
+        <span class="card-btn-disabled">Coming Soon</span>
+      </div>
+
+      <!-- COURSE 3: Fiori (Coming Soon) -->
+      <div class="course-card coming-soon" data-tags="fiori" data-title="SAP Fiori UI5">
+        <div class="card-tag tag-fiori">SAP Fiori</div>
+        <h2 class="card-title">SAP Fiori &amp;<br/>UI5 Development</h2>
+        <p class="card-sub gradient-text-fiori">Zero to Hero</p>
+        <p class="card-desc">Build modern Fiori apps with SAPUI5, OData services, Fiori Elements, and deploy to SAP BTP — coming soon.</p>
+        <div class="card-tags-row">
+          <span class="tag">SAPUI5</span>
+          <span class="tag">OData</span>
+          <span class="tag">Fiori Elements</span>
+          <span class="tag">BTP</span>
+        </div>
+        <span class="card-btn-disabled">Coming Soon</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ABOUT SECTION -->
+  <section class="about-section" id="about">
+    <div class="about-inner">
+      <span class="section-label">// ABOUT THIS HUB</span>
+      <h2 class="about-title">Built for SAP Learners,<br/>by SAP Learners.</h2>
+      <p class="about-text">
+        This hub compiles real study notes, practical examples, and interview preparation material for SAP professionals.
+        Whether you're cracking your first SAP interview or upskilling in integration, this is your free, no-ads, always-growing resource.
+      </p>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <span>SAP Learning Hub — Free Forever 🚀</span>
+  </footer>
+
+    <footer class="footer">
+    <span>Developed by Baby Girl </span>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

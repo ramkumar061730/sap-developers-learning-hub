@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SAP ABAP — Zero to Hero | SAP Learning Hub</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Sora:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="abap.css" />
+</head>
+<body>
+
+  <!-- NAVBAR -->
+  <nav class="navbar">
+    <a href="../index.html" class="nav-brand" style="text-decoration:none;">
+      <span class="brand-dot"></span>
+      <span class="brand-name">SAP<span class="brand-accent">Hub</span></span>
+    </a>
+    <div class="nav-links">
+      <a href="../index.html">← Back to Courses</a>
+    </div>
+    <div class="nav-search">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+      <input type="text" id="topicSearch" placeholder="Search topics..." onkeyup="searchTopics()" />
+    </div>
+  </nav>
+
+  <!-- COURSE HERO -->
+  <section class="course-hero">
+    <div class="hero-grid-bg"></div>
+    <div class="hero-content">
+      <div class="breadcrumb">
+        <span class="card-tag tag-abap" style="font-size:0.75rem;">SAP ABAP</span>
+        <span style="color:var(--text-muted); font-size:0.85rem;">Zero to Hero</span>
+      </div>
+      <h1 class="hero-title" style="font-size:clamp(2rem,5vw,3.5rem); margin-top:1rem;">
+        SAP ABAP <span class="gradient-text">Complete Guide</span>
+      </h1>
+      <p class="hero-subtitle" style="font-size:1rem; margin-bottom:2rem;">
+        From SAP basics to OOP ABAP, OData, CDS &amp; AMDP — structured notes with 100+ interview Q&amp;As.
+      </p>
+      <div class="stats-row" style="gap:2rem;">
+        <div class="stat-item"><span class="stat-number" style="font-size:1.6rem;">12</span><span class="stat-label">TOPICS</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat-item"><span class="stat-number" style="font-size:1.6rem;">100+</span><span class="stat-label">INTERVIEW Q&As</span></div>
+        <div class="stat-divider"></div>
+        <div class="stat-item"><span class="stat-number" style="font-size:1.6rem;">∞</span><span class="stat-label">FREE</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TOPICS GRID -->
+  <section class="courses-section">
+    <div class="section-header">
+      <span class="section-label">// COURSE TOPICS</span>
+    </div>
+
+    <div class="courses-grid" id="topicsGrid">
+
+      <!-- TOPIC 0: SAP ABAP Basics -->
+      <div class="course-card topic-card" data-title="SAP ABAP Basics">
+        <div class="topic-number">00</div>
+        <h3 class="card-title" style="font-size:1.3rem;">SAP ABAP Basics</h3>
+        <p class="card-desc">What is SAP, ABAP, R/3 architecture, key components, SAP messages, client data types, and why ABAP development is needed.</p>
+        <div class="card-tags-row">
+          <span class="tag">SAP</span><span class="tag">ABAP</span><span class="tag">R/3</span><span class="tag">Architecture</span>
+        </div>
+        <a href="topic-basics.html" class="card-btn">Open Topic →</a>
+      </div>
+
+      <!-- TOPIC 1: DDIC -->
+      <div class="course-card topic-card" data-title="DDIC Data Dictionary SE11">
+        <div class="topic-number">01</div>
+        <h3 class="card-title" style="font-size:1.3rem;">DDIC — Data Dictionary</h3>
+        <p class="card-desc">SE11: Tables (Transparent/Pooled/Cluster), Structures, Views, Data Elements, Domains, Search Helps, Lock Objects, TMG, Buffering.</p>
+        <div class="card-tags-row">
+          <span class="tag">SE11</span><span class="tag">Tables</span><span class="tag">Domains</span><span class="tag">Views</span>
+        </div>
+        <a href="topic-ddic.html" class="card-btn">Open Topic →</a>
+      </div>
+
+      <!-- TOPIC 2: Report Programming -->
+      <div class="course-card topic-card" data-title="Report Programming ALV Classical Interactive">
+        <div class="topic-number">02</div>
+        <h3 class="card-title" style="font-size:1.3rem;">Report Programming</h3>
+        <p class="card-desc">Classical, Interactive, and ALV Reports. Events, AT control processing, Parameters vs Select-Options, system fields.</p>
+        <div class="card-tags-row">
+          <span class="tag">ALV</span><span class="tag">Classical</span><span class="tag">Interactive</span><span class="tag">Events</span>
+        </div>
+        <a href="topic-reports.html" class="card-btn">Open Topic →</a>
+      </div>
+
+      <!-- TOPIC 2B: Internal Tables -->
+      <div class="course-card topic-card" data-title="Internal Tables ABAP Programming">
+        <div class="topic-number">02B</div>
+        <h3 class="card-title" style="font-size:1.3rem;">Internal Tables &amp; Programming</h3>
+        <p class="card-desc">Standard, Sorted, Hashed tables. CRUD operations, FOR ALL ENTRIES, SELECT SINGLE vs UPTO 1 ROWS, initialization.</p>
+        <div class="card-tags-row">
+          <span class="tag">Standard</span><span class="tag">Sorted</span><span class="tag">Hashed</span><span class="tag">FAE</span>
+        </div>
+        <a href="topic-internal-tables.html" class="card-btn">Open Topic →</a>
+      </div>
+
+      <!-- TOPIC 3: Modularization -->
+      <div class="course-card topic-card" data-title="Modularization Subroutines Function Modules RFC BAPI BDC">
+        <div class="topic-number">03</div>
+        <h3 class="card-title" style="font-size:1.3rem;">Modularization Techniques</h3>
+        <p class="card-desc">Includes, Subroutines (FORM/ENDFORM), Function Modules (SE37), RFC, BAPI, BDC, LSMW, and Enhancement techniques.</p>
+        <div class="card-tags-row">
+          <span class="tag">SE37</span><span class="tag">RFC</span><span class="tag">BAPI</span><span class="tag">BDC</span><span class="tag">Exits</span>
+        </div>
+        <a href="topic-modularization.html" class="card-btn">Open Topic →</a>
+      </div>
+
+      <!-- TOPIC 4: Module Pool -->
+      <div class="course-card topic-card" data-title="Module Pool Programming Screen Dialog">
+        <div class="topic-number">04</div>
+        <h3 class="card-title" style="font-size:1.3rem;">Module Pool Programming</h3>
+        <p class="card-desc">Screen/Dialog programming, MPP events, OK-Code, controls (Table Controls, Tabstrips), screen navigation flow.</p>
+        <div class="card-tags-row">
+          <span class="tag">Screen</span><span class="tag">Dialog</span><span class="tag">OK-Code</span><span class="tag">Controls</span>
+        </div>
+        <a href="topic-module-pool.html" class="card-btn">Open Topic →</a>
+      </div>
+
+      <!-- TOPIC 5: Adobe Forms -->
+      <div class="course-card topic-card" data-title="Adobe Forms SAP PDF Forms">
+        <div class="topic-number">05</div>
+        <h3 class="card-title" style="font-size:1.3rem;">Adobe Forms</h3>
+        <p class="card-desc">SAP Adobe Forms components: Interface, Form, Layout. Static vs Dynamic forms. Calling forms in ABAP. Web Dynpro &amp; MVC.</p>
+        <div class="card-tags-row">
+          <span class="tag">Adobe</span><span class="tag">Forms</span><span class="tag">PDF</span><span class="tag">Web Dynpro</span>
+        </div>
+        <a href="topic-adobe-forms.html" class="card-btn">Open Topic →</a>
+      </div>
+
+      <!-- TOPIC 6: OOP ABAP -->
+      <div class="course-card topic-card" data-title="OOP ABAP Object Oriented Programming Classes Interfaces Inheritance">
+        <div class="topic-number">06</div>
+        <h3 class="card-title" style="font-size:1.3rem;">OOP ABAP</h3>
+        <p class="card-desc">Classes, Objects, Access Specifiers, Methods, Constructors, Encapsulation, Inheritance, Polymorphism, Interfaces, Exception Handling.</p>
+        <div class="card-tags-row">
+          <span class="tag">Classes</span><span class="tag">Inheritance</span><span class="tag">Interfaces</span><span class="tag">Polymorphism</span>
+        </div>
+        <a href="topic-oop.html" class="card-btn">Open Topic →</a>
+      </div>
+
+      <!-- TOPIC 7: OData -->
+      <div class="course-card topic-card" data-title="OData Services SAP Gateway SEGW">
+        <div class="topic-number">07</div>
+        <h3 class="card-title" style="font-size:1.3rem;">OData Services</h3>
+        <p class="card-desc">What is OData, SAP Gateway architecture, creating services via SEGW, Entity Types, Entity Sets, CRUD operations, interview Q&amp;As.</p>
+        <div class="card-tags-row">
+          <span class="tag">OData</span><span class="tag">SEGW</span><span class="tag">Gateway</span><span class="tag">REST</span>
+        </div>
+        <a href="topic-odata.html" class="card-btn">Open Topic →</a>
+      </div>
+
+      <!-- TOPIC 8: CDS -->
+      <div class="course-card topic-card" data-title="CDS Core Data Services HANA">
+        <div class="topic-number">08</div>
+        <h3 class="card-title" style="font-size:1.3rem;">CDS — Core Data Services</h3>
+        <p class="card-desc">CDS Views, Annotations, Associations, Joins, Exposing via OData, Fiori integration. HANA push-down concepts.</p>
+        <div class="card-tags-row">
+          <span class="tag">CDS</span><span class="tag">HANA</span><span class="tag">Annotations</span><span class="tag">Associations</span>
+        </div>
+        <a href="topic-cds.html" class="card-btn">Open Topic →</a>
+      </div>
+
+      <!-- TOPIC 9: AMDP -->
+      <div class="course-card topic-card" data-title="AMDP ABAP Managed Database Procedures HANA">
+        <div class="topic-number">09</div>
+        <h3 class="card-title" style="font-size:1.3rem;">AMDP — Managed DB Procedures</h3>
+        <p class="card-desc">ABAP Managed Database Procedures: writing SQLScript inside ABAP class methods, HANA-native execution, performance benefits.</p>
+        <div class="card-tags-row">
+          <span class="tag">AMDP</span><span class="tag">SQLScript</span><span class="tag">HANA</span><span class="tag">Performance</span>
+        </div>
+        <a href="topic-amdp.html" class="card-btn">Open Topic →</a>
+      </div>
+
+      <!-- TOPIC 10: Quick Reference -->
+      <div class="course-card topic-card" data-title="Quick Reference Guide Cheatsheet">
+        <div class="topic-number">QR</div>
+        <h3 class="card-title" style="font-size:1.3rem;">Quick Reference Guide</h3>
+        <p class="card-desc">Cheatsheet of all key transaction codes, keywords, system fields, and common patterns — your go-to revision card.</p>
+        <div class="card-tags-row">
+          <span class="tag">Cheatsheet</span><span class="tag">T-Codes</span><span class="tag">Keywords</span>
+        </div>
+        <a href="topic-quickref.html" class="card-btn">Open Topic →</a>
+      </div>
+
+    </div>
+  </section>
+
+  <footer class="footer">
+    <span>SAP Learning Hub — Free Forever 🚀 | <a href="../index.html" style="color:var(--accent-abap);">← All Courses</a></span>
+  </footer>
+
+  <script>
+    function searchTopics() {
+      const q = document.getElementById('topicSearch').value.toLowerCase();
+      document.querySelectorAll('.topic-card').forEach(card => {
+        const t = (card.dataset.title || '').toLowerCase();
+        const d = (card.querySelector('.card-desc')?.textContent || '').toLowerCase();
+        card.classList.toggle('hidden', q && !t.includes(q) && !d.includes(q));
+      });
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Topic 01: DDIC | SAP Learning Hub</title>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Sora:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../style.css" />
+  <link rel="stylesheet" href="abap.css" />
+</head>
+<body>
+  <nav class="navbar">
+    <a href="../index.html" class="nav-brand" style="text-decoration:none;"><span class="brand-dot"></span><span class="brand-name">SAP<span class="brand-accent">Hub</span></span></a>
+    <div class="nav-links"><a href="index.html">← ABAP Course</a></div>
+  </nav>
+
+  <div class="topic-layout">
+    <aside class="topic-sidebar">
+      <p class="sidebar-title">// ON THIS PAGE</p>
+      <ul class="sidebar-nav">
+        <li><a href="#overview">Overview of DDIC</a></li>
+        <li><a href="#db-tables">Database Tables</a></li>
+        <li><a href="#structures">Structures</a></li>
+        <li><a href="#views">Views</a></li>
+        <li><a href="#data-elements">Data Elements</a></li>
+        <li><a href="#domain">Domain</a></li>
+        <li><a href="#search-help">Search Help</a></li>
+        <li><a href="#lock-objects">Lock Objects</a></li>
+        <li><a href="#tmg">TMG</a></li>
+        <li><a href="#buffering">Buffering</a></li>
+        <li><a href="#value-check">Value vs Check Table</a></li>
+        <li><a href="#interview-qa">Interview Q&amp;As</a></li>
+      </ul>
+    </aside>
+
+    <main class="topic-content">
+      <div class="topic-header">
+        <span class="card-tag tag-abap">Topic 01</span>
+        <h1>DDIC — Data Dictionary</h1>
+        <p>SE11: Central metadata repository for all data definitions — tables, structures, views, domains, search helps, and more.</p>
+      </div>
+
+      <div class="content-section" id="overview">
+        <h2>Overview of DDIC</h2>
+        <p>ABAP Dictionary (DDIC) is a <strong>central data management system</strong> in SAP. Its main function is to support the creation and management of data definitions — Data Elements, Structures, Table Types, etc.</p>
+        <div class="callout"><p>📌 Transaction Code: <strong>SE11</strong><br/>Path: SAP Easy Access → Tools → ABAP Workbench → Development → ABAP Dictionary</p></div>
+        <h3>Components of DDIC</h3>
+        <ul>
+          <li>(a) Database Tables</li>
+          <li>(b) Structures</li>
+          <li>(c) Views</li>
+          <li>(d) Data Elements</li>
+          <li>(e) Domains</li>
+          <li>(f) Search Help</li>
+          <li>(g) Lock Objects</li>
+          <li>(h) Table Maintenance Generator (TMG)</li>
+        </ul>
+      </div>
+
+      <div class="content-section" id="db-tables">
+        <h2>A. Database Tables</h2>
+        <p>A table stores data in rows (Records) and columns (Fields). Custom table names must start with <strong>'Z'</strong> or <strong>'Y'</strong>.</p>
+        <h3>Primary Key</h3>
+        <p>A Primary Key uniquely identifies each row in a table by using one or more columns. No two rows can have the same key value.</p>
+        <h3>Foreign Key</h3>
+        <p>A Foreign Key establishes a relationship between different tables in the ABAP Dictionary. It maintains referential integrity between tables.</p>
+        <h3>Types of Database Tables</h3>
+        <table class="content-table">
+          <tr><th>Feature</th><th>Transparent Table</th><th>Pooled Table</th><th>Cluster Table</th></tr>
+          <tr><td>Purpose</td><td>Stores master data</td><td>Stores small internal tables</td><td>Stores few large tables</td></tr>
+          <tr><td>DB Relationship</td><td>One-to-one</td><td>Many-to-one</td><td>Many-to-one</td></tr>
+          <tr><td>Storage</td><td>Single associated DB table</td><td>Table Pool (shared)</td><td>Table Cluster (shared)</td></tr>
+          <tr><td>Name/Fields</td><td>Same as DB table</td><td>Different from DB table</td><td>Different from DB table</td></tr>
+          <tr><td>Secondary Index</td><td>Can be created</td><td>Cannot be created</td><td>Cannot be created</td></tr>
+        </table>
+      </div>
+
+      <div class="content-section" id="structures">
+        <h2>B. Structures</h2>
+        <p>A Structure is a data object made up of components stored one after another in memory. It is a <strong>skeletal view of a table</strong> — contains column definitions but has no data. Also called a 'Work Area'. A structure may hold only a single record at run-time.</p>
+        <table class="content-table">
+          <tr><th>Feature</th><th>Append Structure</th><th>Include Structure</th></tr>
+          <tr><td>Purpose</td><td>Add fields to standard SAP tables</td><td>Add fields to custom tables</td></tr>
+          <tr><td>Position</td><td>Only at the end</td><td>Anywhere</td></tr>
+          <tr><td>Field Type</td><td>Custom-defined fields</td><td>SAP-defined fields</td></tr>
+          <tr><td>Limit</td><td>One append per table</td><td>Included in multiple tables</td></tr>
+        </table>
+      </div>
+
+      <div class="content-section" id="views">
+        <h2>C. Views</h2>
+        <p>A View is similar to a database table but <strong>does not contain physical data</strong>. It is a snapshot created by combining fields from single or multiple tables (called base tables).</p>
+        <table class="content-table">
+          <tr><th>View Type</th><th>Join Type</th><th>Tables</th><th>Read/Write</th><th>Use</th></tr>
+          <tr><td>Database View</td><td>Inner Join</td><td>One or more</td><td>Read-only</td><td>General data reads</td></tr>
+          <tr><td>Projection View</td><td>N/A</td><td>Single table</td><td>Read + Maintain</td><td>Show only selected fields</td></tr>
+          <tr><td>Help View</td><td>Outer Join</td><td>Two or more</td><td>Read-only</td><td>Search help selection method</td></tr>
+          <tr><td>Maintenance View</td><td>Inner Join (FK required)</td><td>Two or more</td><td>Full (R/W/Delete)</td><td>Data maintenance across tables</td></tr>
+        </table>
+        <div class="callout"><p>💡 <strong>Inner Join</strong>: Only rows matching in ALL tables returned. <strong>Outer Join</strong>: All rows from first (left) table; unmatched rows from others show blank.</p></div>
+      </div>
+
+      <div class="content-section" id="data-elements">
+        <h2>D. Data Elements</h2>
+        <p>A Data Element provides <strong>semantic (business) information</strong> of a database table field — it describes how a field is displayed to the end-user. It stores field labels, short text, and documentation.</p>
+        <div class="callout"><p>📌 Relationship: <strong>Field → Data Element → Domain</strong></p></div>
+      </div>
+
+      <div class="content-section" id="domain">
+        <h2>E. Domain</h2>
+        <p>A Domain describes the <strong>technical characteristics</strong> of an attribute — data type and length. It is assigned to a Data Element and can be reused across multiple fields. It also describes the value range of a field (Fixed Values or Value Table).</p>
+      </div>
+
+      <div class="content-section" id="search-help">
+        <h2>F. Search Help</h2>
+        <p>A Search Help is a tool to help users find data in SAP. Accessed via the <strong>F4 key</strong>.</p>
+        <table class="content-table">
+          <tr><th>Type</th><th>Description</th></tr>
+          <tr><td>Elementary Search Help</td><td>Describes a single search path. Defines where data of the hit list is read from.</td></tr>
+          <tr><td>Collective Search Help</td><td>Combines several elementary search helps, offering multiple alternative search paths.</td></tr>
+        </table>
+      </div>
+
+      <div class="content-section" id="lock-objects">
+        <h2>G. Lock Objects</h2>
+        <p>Lock Objects prevent <strong>simultaneous access by multiple users</strong>. They synchronize access to the same data. A lock object auto-generates two function modules:</p>
+        <div class="code-block">ENQUEUE_&lt;LockObjectName&gt;  " To insert in queue (LOCK)
+DEQUEUE_&lt;LockObjectName&gt;  " To remove from queue (UNLOCK)</div>
+        <table class="content-table">
+          <tr><th>Lock Type</th><th>Code</th><th>Behavior</th></tr>
+          <tr><td>Read Lock (Shared)</td><td>S</td><td>Allows multiple users to read simultaneously</td></tr>
+          <tr><td>Write Lock (Exclusive)</td><td>E</td><td>Prevents any other user from accessing</td></tr>
+          <tr><td>Enhanced Write Lock</td><td>X</td><td>Stricter exclusive lock; cannot be accumulated</td></tr>
+        </table>
+      </div>
+
+      <div class="content-section" id="tmg">
+        <h2>H. Table Maintenance Generator (TMG)</h2>
+        <p>TMG creates a maintenance interface for database tables <strong>without writing ABAP code</strong>. Can be checked via <strong>SM30</strong> or <strong>SM31</strong>.</p>
+        <table class="content-table">
+          <tr><th>Type</th><th>Description</th></tr>
+          <tr><td>Single Step</td><td>One screen where user can add, edit, delete records directly</td></tr>
+          <tr><td>Two Step</td><td>First screen shows overview (key fields); clicking opens a detail screen for full editing</td></tr>
+        </table>
+      </div>
+
+      <div class="content-section" id="buffering">
+        <h2>Buffering</h2>
+        <p>When an Open SQL statement reads a record, if the table is buffered, the record is saved in RAM on the application server. Later reads fetch from buffer instead of the database — <strong>improving performance</strong>.</p>
+        <table class="content-table">
+          <tr><th>Type</th><th>Behavior</th></tr>
+          <tr><td>Single Record Buffered</td><td>Fetch and cache one record at a time</td></tr>
+          <tr><td>Generic Area Buffered</td><td>Buffer records based on a partial key (WHERE condition prefix)</td></tr>
+          <tr><td>Fully Buffered</td><td>Entire table is loaded into the buffer at once</td></tr>
+        </table>
+        <div class="callout"><p>💡 Buffering is best for <strong>master data tables</strong> — updated rarely, accessed frequently.</p></div>
+      </div>
+
+      <div class="content-section" id="value-check">
+        <h2>Value Table vs Check Table</h2>
+        <table class="content-table">
+          <tr><th>Feature</th><th>Value Table</th><th>Check Table</th></tr>
+          <tr><td>Validation Level</td><td>Domain level</td><td>Field level (table level)</td></tr>
+          <tr><td>Definition</td><td>Defined at domain level; provides F4 help for all fields using the domain</td><td>SAP proposes value table as check table by default</td></tr>
+          <tr><td>Data Extraction</td><td>Can be used to extract data in programs</td><td>Cannot be used to extract data</td></tr>
+          <tr><td>Validation</td><td>Not for data validation</td><td>Used to validate data</td></tr>
+        </table>
+      </div>
+
+      <div class="content-section" id="interview-qa">
+        <h2>Interview Q&amp;As</h2>
+
+        <div class="qa-block">
+          <div class="qa-question"><span class="qa-q-label">Q</span>What is DDIC in SAP? What is its transaction code?</div>
+          <div class="qa-answer"><span class="qa-a-label">A</span>DDIC (Data Dictionary) is the central metadata repository in SAP. It manages all data definitions like tables, structures, views, data elements, and domains. It is the single source of truth for all data definitions used across the SAP system. Transaction code: <strong>SE11</strong>.</div>
+        </div>
+
+        <div class="qa-block">
+          <div class="qa-question"><span class="qa-q-label">Q</span>What is the difference between a Transparent, Pooled, and Cluster Table?</div>
+          <div class="qa-answer"><span class="qa-a-label">A</span><strong>Transparent</strong>: One-to-one mapping with DB table, same name/fields, stores master data, supports secondary indexes. <strong>Pooled</strong>: Many-to-one, stored in Table Pool, different names/fields, stores small internal control data, no secondary index. <strong>Cluster</strong>: Many-to-one, stored in Table Cluster, used when tables share primary keys and are accessed together, no secondary index.</div>
+        </div>
+
+        <div class="qa-block">
+          <div class="qa-question"><span class="qa-q-label">Q</span>What is a Data Element? How is it different from a Domain?</div>
+          <div class="qa-answer"><span class="qa-a-label">A</span><strong>Data Element</strong> provides semantic (business) meaning to a field — it stores field labels, short text, and documentation. <strong>Domain</strong> defines the technical characteristics — data type, length, and value range. A Data Element uses a Domain for its technical definition. Multiple data elements can share the same domain.</div>
+        </div>
+
+        <div class="qa-block">
+          <div class="qa-question"><span class="qa-q-label">Q</span>Explain the relationship between Field, Data Element, and Domain.</div>
+          <div class="qa-answer"><span class="qa-a-label">A</span><strong>Field → Data Element → Domain</strong>. A table field references a Data Element which provides its business description and labels. The Data Element references a Domain which provides the technical type, length, and valid value ranges. This three-layer architecture promotes reusability and consistency.</div>
+        </div>
+
+        <div class="qa-block">
+          <div class="qa-question"><span class="qa-q-label">Q</span>What are the 4 types of Views in SAP DDIC?</div>
+          <div class="qa-answer"><span class="qa-a-label">A</span>(1) <strong>Database View</strong>: Inner join on multiple tables — read only. (2) <strong>Projection View</strong>: Single table, read/write, shows only selected fields. (3) <strong>Help View</strong>: Outer join, multiple tables, used as search help selection method — read only. (4) <strong>Maintenance View</strong>: Multiple tables with FK relationship, full read/write/delete capability.</div>
+        </div>
+
+        <div class="qa-block">
+          <div class="qa-question"><span class="qa-q-label">Q</span>What is a Lock Object? What are the types of locks?</div>
+          <div class="qa-answer"><span class="qa-a-label">A</span>A Lock Object controls concurrent access to database records. It generates two FMs: ENQUEUE (to lock) and DEQUEUE (to unlock). Types: <strong>S — Shared (Read) Lock</strong>: allows multiple simultaneous reads. <strong>E — Exclusive (Write) Lock</strong>: prevents all other access. <strong>X — Enhanced Write Lock</strong>: exclusive lock that cannot be accumulated (cumulated).</div>
+        </div>
+
+        <div class="qa-block">
+          <div class="qa-question"><span class="qa-q-label">Q</span>What is buffering in SAP? What are its types?</div>
+          <div class="qa-answer"><span class="qa-a-label">A</span>Buffering stores frequently-accessed table data in application server memory (RAM) to avoid repeated database reads. Types: (1) <strong>Single Record Buffering</strong> — one record cached at a time. (2) <strong>Generic Area Buffering</strong> — records matching a partial key prefix are buffered together. (3) <strong>Full Buffering</strong> — entire table loaded into buffer. Best for small, rarely-changed master data tables.</div>
+        </div>
+
+        <div class="qa-block">
+          <div class="qa-question"><span class="qa-q-label">Q</span>What is the difference between Primary Index and Secondary Index?</div>
+          <div class="qa-answer"><span class="qa-a-label">A</span><strong>Primary Index</strong>: Created automatically based on primary key fields. Ensures uniqueness and fast access by primary key. <strong>Secondary Index</strong>: Manually created on non-key fields to speed up queries using those fields in WHERE conditions. Up to 16 secondary indexes per table. Too many secondary indexes cause overhead on INSERT/UPDATE operations.</div>
+        </div>
+
+      </div>
+
+      <div class="topic-nav">
+        <a href="topic-basics.html">← Topic 00: Basics</a>
+        <a href="topic-reports.html">Topic 02: Report Programming →</a>
+      </div>
+    </main>
+  </div>
+
+  <footer class="footer"><span>SAP Learning Hub — Free Forever 🚀</span></footer>
+</body>
+</html>
