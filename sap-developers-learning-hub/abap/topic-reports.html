@@ -4,9 +4,82 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Topic 02: Report Programming | SAP Learning Hub</title>
+
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700&family=Sora:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../style.css" />
   <link rel="stylesheet" href="abap.css" />
+
+  <!-- Small extra styles only for Q&A accordion (safe + optional) -->
+  <style>
+    /* Q&A Accordion */
+    .qa-accordion { display: grid; gap: 14px; }
+    .qa-item {
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid rgba(255,255,255,0.06);
+      background: rgba(255,255,255,0.03);
+    }
+    .qa-item summary {
+      list-style: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 18px;
+      font-weight: 700;
+      font-size: 16px;
+    }
+    .qa-item summary::-webkit-details-marker { display: none; }
+    .qa-q-badge {
+      width: 28px; height: 28px;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: "JetBrains Mono", monospace;
+      font-weight: 700;
+      background: rgba(0, 208, 255, 0.14);
+      border: 1px solid rgba(0, 208, 255, 0.25);
+      color: rgba(0, 208, 255, 0.95);
+      flex: 0 0 auto;
+    }
+    .qa-body {
+      padding: 0 18px 16px 18px;
+      border-top: 1px solid rgba(255,255,255,0.06);
+    }
+    .qa-a-row {
+      display: flex;
+      gap: 12px;
+      padding-top: 14px;
+      align-items: flex-start;
+    }
+    .qa-a-badge {
+      width: 28px; height: 28px;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-family: "JetBrains Mono", monospace;
+      font-weight: 700;
+      background: rgba(45, 215, 125, 0.12);
+      border: 1px solid rgba(45, 215, 125, 0.22);
+      color: rgba(45, 215, 125, 0.95);
+      flex: 0 0 auto;
+      margin-top: 2px;
+    }
+    .qa-answer-text { opacity: 0.92; line-height: 1.7; }
+    .pill {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 999px;
+      font-family: "JetBrains Mono", monospace;
+      font-size: 12px;
+      border: 1px solid rgba(255,255,255,0.10);
+      background: rgba(255,255,255,0.04);
+      margin-right: 6px;
+      margin-top: 6px;
+    }
+  </style>
 </head>
 
 <body>
@@ -24,7 +97,7 @@
       <ul class="sidebar-nav">
         <li><a href="#overview">Overview (RICEF/W)</a></li>
         <li><a href="#types">Types of Reports</a></li>
-        <li><a href="#classical-events">Classical Report Events</a></li>
+        <li><a href="#classical">Classical Report Events</a></li>
         <li><a href="#interactive">Interactive Reports</a></li>
         <li><a href="#alv">ALV Reports</a></li>
         <li><a href="#control-level">Control Level Processing (AT Events)</a></li>
@@ -38,125 +111,142 @@
       <div class="topic-header">
         <span class="card-tag tag-abap">Topic 02</span>
         <h1>Report Programming</h1>
-        <p>Classical reports, interactive reports, and ALV — key events, patterns, and interview-ready explanations.</p>
+        <p>Everything you need for ABAP reporting: classical events, interactive drill-down, ALV basics, and interview-ready Q&amp;A.</p>
       </div>
 
+      <!-- Overview -->
       <div class="content-section" id="overview">
         <h2>Overview (RICEF/W)</h2>
         <p><strong>RICEF/W</strong> stands for <strong>Reports, Interfaces, Conversions, Enhancements, Forms, Work Flow</strong>. These are the key development object types in SAP ABAP.</p>
         <div class="callout">
-          <p>📌 In ABAP projects, “Reports” are one of the most common deliverables—used for data extraction, analysis, and business outputs.</p>
+          <p>📌 Reports are used to fetch, process, and present business data (lists/ALV/exports) based on selection-screen inputs.</p>
         </div>
       </div>
 
+      <!-- Types -->
       <div class="content-section" id="types">
         <h2>Types of Reports</h2>
         <ul>
-          <li><strong>Classical Reports</strong></li>
-          <li><strong>Interactive Reports</strong></li>
-          <li><strong>ALV Reports</strong> (ABAP List Viewer)</li>
+          <li><strong>Classical Reports</strong> — flat list output (WRITE-based), minimal interaction.</li>
+          <li><strong>Interactive Reports</strong> — drill-down output using list events (double-click etc.).</li>
+          <li><strong>ALV Reports</strong> — standard table display with sorting/filtering/totals/export.</li>
         </ul>
       </div>
 
-      <div class="content-section" id="classical-events">
+      <!-- Classical -->
+      <div class="content-section" id="classical">
         <h2>Classical Report Events</h2>
-        <p>Classical reports follow a standard event sequence. The main business logic is typically written in <strong>START-OF-SELECTION</strong>.</p>
+        <p>Classical reports follow an event-driven sequence. Main data retrieval and output logic is typically placed in <strong>START-OF-SELECTION</strong>.</p>
+
+        <table class="content-table">
+          <tr><th>Event</th><th>Description</th></tr>
+          <tr><td>LOAD-OF-PROGRAM</td><td>Loads the program into memory for execution.</td></tr>
+          <tr><td>INITIALIZATION</td><td>Initialize default values of variables and selection-screen fields.</td></tr>
+          <tr><td>AT SELECTION-SCREEN OUTPUT</td><td>Dynamically modify selection screen (hide/disable fields).</td></tr>
+          <tr><td>AT SELECTION-SCREEN</td><td>Validate multiple fields together (cross-field validation).</td></tr>
+          <tr><td>AT SELECTION-SCREEN ON &lt;field&gt;</td><td>Validate a single input field.</td></tr>
+          <tr><td>AT SELECTION-SCREEN ON VALUE-REQUEST</td><td>Provide search help (F4) for an input field.</td></tr>
+          <tr><td>AT SELECTION-SCREEN ON HELP-REQUEST</td><td>Provide help information (F1) for an input field.</td></tr>
+          <tr><td>START-OF-SELECTION</td><td><strong>Main processing</strong> — fetch data and build output.</td></tr>
+          <tr><td>END-OF-SELECTION</td><td>End marker after data processing.</td></tr>
+          <tr><td>TOP-OF-PAGE</td><td>Header printed on top of each page.</td></tr>
+          <tr><td>END-OF-PAGE</td><td>Footer printed at bottom of each page.</td></tr>
+        </table>
+
+        <div class="callout">
+          <p>💡 If you don’t write START-OF-SELECTION explicitly, ABAP places your top-level statements there by default.</p>
+        </div>
+      </div>
+
+      <!-- Interactive -->
+      <div class="content-section" id="interactive">
+        <h2>Interactive Reports</h2>
+        <p>Interactive reporting allows users to drill down to details. When a user interacts (double-click / toolbar), ABAP triggers list events and you can create a <strong>secondary list</strong>.</p>
 
         <table class="content-table">
           <tr><th>Event</th><th>Purpose</th></tr>
-          <tr><td>LOAD-OF-PROGRAM</td><td>Loads the program into memory for execution.</td></tr>
-          <tr><td>INITIALIZATION</td><td>Initialize default values of program variables and selection-screen variables.</td></tr>
-          <tr><td>AT SELECTION-SCREEN OUTPUT</td><td>Modify the selection screen dynamically based on user action.</td></tr>
-          <tr><td>AT SELECTION-SCREEN</td><td>Validate multiple fields on the selection screen.</td></tr>
-          <tr><td>AT SELECTION-SCREEN ON &lt;field&gt;</td><td>Validate a single input field on the selection screen.</td></tr>
-          <tr><td>AT SELECTION-SCREEN ON VALUE-REQUEST</td><td>Provide search help (F4) for an input field.</td></tr>
-          <tr><td>AT SELECTION-SCREEN ON HELP-REQUEST</td><td>Provide help information (F1) for an input field.</td></tr>
-          <tr><td>START-OF-SELECTION</td><td><strong>Main event</strong> — write business logic and data fetching here.</td></tr>
-          <tr><td>END-OF-SELECTION</td><td>Indicates START-OF-SELECTION has ended.</td></tr>
-          <tr><td>TOP-OF-PAGE</td><td>Display constant page heading on all pages.</td></tr>
-          <tr><td>END-OF-PAGE</td><td>Provide constant footer information across pages.</td></tr>
+          <tr><td>AT LINE-SELECTION</td><td>Triggered on double-click in the output list.</td></tr>
+          <tr><td>AT USER-COMMAND</td><td>Handle custom toolbar/menu actions via function codes.</td></tr>
+          <tr><td>TOP-OF-PAGE DURING LINE-SELECTION</td><td>Header for the secondary list pages.</td></tr>
+          <tr><td>AT PF&lt;n&gt;</td><td>Handle function key presses (F1–F12).</td></tr>
+          <tr><td>SET PF-STATUS</td><td>Attach a custom GUI status to the report.</td></tr>
         </table>
 
         <div class="callout">
-          <p>💡 If you don’t code START-OF-SELECTION explicitly, ABAP assigns your “top-level” statements to it implicitly.</p>
+          <p>📌 Tip: Use <strong>HIDE</strong> in the primary list to store keys and read them again during AT LINE-SELECTION.</p>
         </div>
       </div>
 
-      <div class="content-section" id="interactive">
-        <h2>Interactive Reports</h2>
-        <p>Interactive report programming allows users to drill down: a secondary list is displayed when the user interacts with the primary list.</p>
-
-        <ul>
-          <li><strong>AT LINE-SELECTION</strong>: triggered when user double-clicks an item in output</li>
-          <li><strong>AT USER-COMMAND</strong>: handle custom user actions / toolbar changes</li>
-          <li><strong>TOP-OF-PAGE DURING LINE-SELECTION</strong>: header for secondary list pages</li>
-          <li><strong>AT PF&lt;n&gt;</strong>: function key press (F1–F12)</li>
-          <li><strong>SET PF-STATUS</strong>: attach custom GUI status</li>
-        </ul>
-
-        <div class="callout">
-          <p>📌 Tip: Use <strong>HIDE</strong> technique to store key fields from a selected line and retrieve details in AT LINE-SELECTION.</p>
-        </div>
-      </div>
-
+      <!-- ALV -->
       <div class="content-section" id="alv">
         <h2>ALV Reports (ABAP List Viewer)</h2>
-        <p>ALV is widely used for displaying SAP data with built-in features like sorting, filtering, totals, column reordering, and export.</p>
+        <p>ALV is the standard SAP display framework for tables. It provides sorting, filtering, totals, layout variants, column selection, and export (Excel, etc.).</p>
 
-        <h3>Types</h3>
+        <h3>Types of ALV</h3>
         <ul>
-          <li><strong>Simple ALV</strong> — normal grid/list display</li>
+          <li><strong>Simple ALV</strong> — single list/grid display</li>
           <li><strong>Blocked ALV</strong> — multiple lists displayed consecutively</li>
-          <li><strong>ALV Hierarchical Sequential</strong> — hierarchical parent/child display</li>
+          <li><strong>ALV Hierarchical Sequential</strong> — hierarchical (parent-child) display</li>
         </ul>
 
-        <h3>Common Function Modules</h3>
+        <h3>Common ALV Function Modules</h3>
         <table class="content-table">
           <tr><th>Function Module</th><th>Use</th></tr>
-          <tr><td>REUSE_ALV_GRID_DISPLAY</td><td>Display results in a grid</td></tr>
-          <tr><td>REUSE_ALV_LIST_DISPLAY</td><td>Display results in a list</td></tr>
-          <tr><td>REUSE_ALV_FIELDCATALOG_MERGE</td><td>Build/merge field catalog</td></tr>
-        </table>
-      </div>
-
-      <div class="content-section" id="control-level">
-        <h2>Control Level Processing (AT Events)</h2>
-        <p>Control level events are used within a <strong>LOOP</strong> on a (typically sorted) internal table to process grouped data.</p>
-
-        <table class="content-table">
-          <tr><th>Event</th><th>Triggered When</th></tr>
-          <tr><td>AT FIRST</td><td>First row of internal table is read</td></tr>
-          <tr><td>AT NEW &lt;field&gt;</td><td>Value of the specified field changes</td></tr>
-          <tr><td>AT END OF &lt;field&gt;</td><td>End of group with same field value</td></tr>
-          <tr><td>AT LAST</td><td>Last row of internal table is read</td></tr>
+          <tr><td>REUSE_ALV_GRID_DISPLAY</td><td>Display result in a grid</td></tr>
+          <tr><td>REUSE_ALV_LIST_DISPLAY</td><td>Display result in a list</td></tr>
+          <tr><td>REUSE_ALV_FIELDCATALOG_MERGE</td><td>Build / merge field catalog</td></tr>
         </table>
 
         <div class="callout">
-          <p>💡 Used for group headers, subtotals, and group footers (after sorting by the grouping field).</p>
+          <p>💡 ALV requires a field catalog (<strong>IT_FIELDCAT</strong>) to describe column properties (text, output length, key fields, etc.).</p>
         </div>
       </div>
 
+      <!-- Control level -->
+      <div class="content-section" id="control-level">
+        <h2>Control Level Processing (AT Events)</h2>
+        <p>Control level events are processed within a <strong>LOOP</strong> on a (usually sorted) internal table to handle group headers/footers/subtotals.</p>
+
+        <table class="content-table">
+          <tr><th>Event</th><th>Triggered When</th><th>Typical Use</th></tr>
+          <tr><td>AT FIRST</td><td>First row is processed</td><td>Print report header / init totals</td></tr>
+          <tr><td>AT NEW &lt;field&gt;</td><td>Group field value changes</td><td>Print group header</td></tr>
+          <tr><td>AT END OF &lt;field&gt;</td><td>End of a group</td><td>Print subtotal / group footer</td></tr>
+          <tr><td>AT LAST</td><td>Last row is processed</td><td>Print grand totals / end summary</td></tr>
+        </table>
+
+        <div class="callout">
+          <p>⚠️ These events work correctly when data is sorted by the control field(s).</p>
+        </div>
+      </div>
+
+      <!-- Params vs Select-options -->
       <div class="content-section" id="params-vs-so">
         <h2>Parameter vs Select-Options</h2>
 
         <table class="content-table">
           <tr><th>Feature</th><th>Parameter</th><th>Select-Options</th></tr>
           <tr><td>Input Type</td><td>Single value only</td><td>Single / multiple values / ranges</td></tr>
-          <tr><td>Without Input</td><td>Cannot get data without input</td><td>Can fetch entire data when left blank</td></tr>
+          <tr><td>Without Input</td><td>Cannot get data without input</td><td>Can fetch entire data without input</td></tr>
           <tr><td>Trigger</td><td>Triggered once</td><td>Triggered twice (screen + validation)</td></tr>
-          <tr><td>Purpose</td><td>Fetch exact record</td><td>Validation and range selection</td></tr>
+          <tr><td>Purpose</td><td>Fetch exact record</td><td>Validation + range selection</td></tr>
         </table>
+
+        <div class="callout">
+          <p>💡 Select-Options internally creates a range table with fields: <span class="pill">SIGN</span><span class="pill">OPTION</span><span class="pill">LOW</span><span class="pill">HIGH</span></p>
+        </div>
       </div>
 
+      <!-- System fields -->
       <div class="content-section" id="system-fields">
         <h2>SAP System Fields</h2>
 
         <table class="content-table">
           <tr><th>System Field</th><th>Description</th></tr>
-          <tr><td>SY-SUBRC</td><td>Return code after ABAP statement (0 = success)</td></tr>
+          <tr><td>SY-SUBRC</td><td>Return code after statement (0 = success)</td></tr>
           <tr><td>SY-DATUM</td><td>Current system date</td></tr>
           <tr><td>SY-UZEIT</td><td>Current system time</td></tr>
-          <tr><td>SY-UNAME</td><td>Logon name of current user</td></tr>
+          <tr><td>SY-UNAME</td><td>Current user logon name</td></tr>
           <tr><td>SY-TABIX</td><td>Current row index in LOOP</td></tr>
           <tr><td>SY-TCODE</td><td>Current transaction code</td></tr>
           <tr><td>SY-REPID</td><td>Current program name</td></tr>
@@ -166,37 +256,228 @@
         </table>
       </div>
 
+      <!-- Interview QAs -->
       <div class="content-section" id="interview-qa">
         <h2>Interview Q&amp;As</h2>
 
-        <div class="qa-block">
-          <div class="qa-question"><span class="qa-q-label">Q</span>What is a Classical Report in ABAP? How is it different from Interactive Report?</div>
-          <div class="qa-answer"><span class="qa-a-label">A</span><strong>Classical Report</strong> displays data in a flat list format with no drill-down. <strong>Interactive Report</strong> allows user interaction (like double-click) to generate secondary (detail) lists using events such as <strong>AT LINE-SELECTION</strong> and <strong>AT USER-COMMAND</strong>.</div>
-        </div>
+        <div class="qa-accordion">
+          <details class="qa-item" open>
+            <summary><span class="qa-q-badge">Q</span>What is a Classical Report in ABAP? How is it different from Interactive Report?</summary>
+            <div class="qa-body">
+              <div class="qa-a-row">
+                <span class="qa-a-badge">A</span>
+                <div class="qa-answer-text">
+                  <strong>Classical Report</strong>: simple list-based report that displays data in a flat list format; user cannot interact with output.
+                  <br /><br />
+                  <strong>Interactive Report</strong>: extends classical report by allowing user interaction — double-clicking a line on the primary list generates a secondary (detail) list.
+                  Uses events like <strong>AT LINE-SELECTION</strong> and <strong>AT USER-COMMAND</strong>.
+                </div>
+              </div>
+            </div>
+          </details>
 
-        <div class="qa-block">
-          <div class="qa-question"><span class="qa-q-label">Q</span>What are the events in a Classical Report?</div>
-          <div class="qa-answer"><span class="qa-a-label">A</span>LOAD-OF-PROGRAM, INITIALIZATION, AT SELECTION-SCREEN OUTPUT, AT SELECTION-SCREEN, AT SELECTION-SCREEN ON &lt;field&gt;, AT SELECTION-SCREEN ON VALUE-REQUEST, START-OF-SELECTION, END-OF-SELECTION, TOP-OF-PAGE, END-OF-PAGE.</div>
-        </div>
+          <details class="qa-item">
+            <summary><span class="qa-q-badge">Q</span>What are the events in a Classical Report? Explain each event.</summary>
+            <div class="qa-body">
+              <div class="qa-a-row">
+                <span class="qa-a-badge">A</span>
+                <div class="qa-answer-text">
+                  <strong>LOAD-OF-PROGRAM</strong>: loads program into memory.
+                  <br /><strong>INITIALIZATION</strong>: default values before selection screen.
+                  <br /><strong>AT SELECTION-SCREEN OUTPUT</strong>: dynamic selection-screen modification.
+                  <br /><strong>AT SELECTION-SCREEN ON &lt;field&gt;</strong>: validate a single field.
+                  <br /><strong>AT SELECTION-SCREEN</strong>: validate multiple fields together.
+                  <br /><strong>AT SELECTION-SCREEN ON VALUE-REQUEST</strong>: F4 help.
+                  <br /><strong>START-OF-SELECTION</strong>: main processing (fetch/process/write).
+                  <br /><strong>END-OF-SELECTION</strong>: end marker after main processing.
+                  <br /><strong>TOP-OF-PAGE</strong>: page header.
+                  <br /><strong>END-OF-PAGE</strong>: page footer.
+                </div>
+              </div>
+            </div>
+          </details>
 
-        <div class="qa-block">
-          <div class="qa-question"><span class="qa-q-label">Q</span>Difference between AT SELECTION-SCREEN and AT SELECTION-SCREEN ON &lt;field&gt;?</div>
-          <div class="qa-answer"><span class="qa-a-label">A</span><strong>AT SELECTION-SCREEN</strong> validates multiple fields together after input is collected. <strong>AT SELECTION-SCREEN ON &lt;field&gt;</strong> validates a specific field when the user leaves that field.</div>
-        </div>
+          <details class="qa-item">
+            <summary><span class="qa-q-badge">Q</span>What is the difference between AT SELECTION-SCREEN and AT SELECTION-SCREEN ON &lt;field&gt;?</summary>
+            <div class="qa-body">
+              <div class="qa-a-row">
+                <span class="qa-a-badge">A</span>
+                <div class="qa-answer-text">
+                  <strong>AT SELECTION-SCREEN</strong> is triggered after the full selection-screen input is collected and is used for cross-field validation.
+                  <br /><br />
+                  <strong>AT SELECTION-SCREEN ON &lt;field&gt;</strong> is triggered when the user leaves a specific field and is used for single-field validation.
+                </div>
+              </div>
+            </div>
+          </details>
 
-        <div class="qa-block">
-          <div class="qa-question"><span class="qa-q-label">Q</span>What is an ALV Report and its types?</div>
-          <div class="qa-answer"><span class="qa-a-label">A</span>ALV (ABAP List Viewer) is a standard display framework with sorting, filtering, totals, export, etc. Types: Simple ALV, Blocked ALV, and Hierarchical Sequential ALV.</div>
-        </div>
+          <details class="qa-item">
+            <summary><span class="qa-q-badge">Q</span>What is an Interactive Report? What events does it have?</summary>
+            <div class="qa-body">
+              <div class="qa-a-row">
+                <span class="qa-a-badge">A</span>
+                <div class="qa-answer-text">
+                  An <strong>Interactive Report</strong> allows users to drill down by interacting with the output list.
+                  <br /><br />
+                  Events include:
+                  <ul>
+                    <li><strong>AT LINE-SELECTION</strong> (double-click)</li>
+                    <li><strong>AT USER-COMMAND</strong> (custom toolbar action)</li>
+                    <li><strong>TOP-OF-PAGE DURING LINE-SELECTION</strong> (secondary list header)</li>
+                    <li><strong>AT PF&lt;n&gt;</strong> (function key press)</li>
+                  </ul>
+                  Primary list is created in <strong>START-OF-SELECTION</strong>; secondary lists are created in interactive events.
+                </div>
+              </div>
+            </div>
+          </details>
 
-        <div class="qa-block">
-          <div class="qa-question"><span class="qa-q-label">Q</span>What is SY-SUBRC? What value indicates success?</div>
-          <div class="qa-answer"><span class="qa-a-label">A</span>SY-SUBRC is the return code for the last statement. <strong>0</strong> means success; non-zero typically means failure/not found.</div>
-        </div>
+          <details class="qa-item">
+            <summary><span class="qa-q-badge">Q</span>What is an ALV Report? What are its types?</summary>
+            <div class="qa-body">
+              <div class="qa-a-row">
+                <span class="qa-a-badge">A</span>
+                <div class="qa-answer-text">
+                  ALV (ABAP List Viewer) is a standard framework to display tabular data with sorting, filtering, totals, column reordering, and export.
+                  <br /><br />
+                  Types:
+                  <ul>
+                    <li><strong>Simple ALV</strong> — single grid/list</li>
+                    <li><strong>Blocked ALV</strong> — multiple lists displayed together</li>
+                    <li><strong>Hierarchical Sequential ALV</strong> — tree-structured parent-child display</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </details>
 
-        <div class="qa-block">
-          <div class="qa-question"><span class="qa-q-label">Q</span>What are Variants in ABAP reports?</div>
-          <div class="qa-answer"><span class="qa-a-label">A</span>Variants save selection-screen inputs (parameters/ranges) so users can reuse them—especially useful for background jobs.</div>
+          <details class="qa-item">
+            <summary><span class="qa-q-badge">Q</span>What function modules are used in ALV reports?</summary>
+            <div class="qa-body">
+              <div class="qa-a-row">
+                <span class="qa-a-badge">A</span>
+                <div class="qa-answer-text">
+                  Common ALV FMs:
+                  <ul>
+                    <li><strong>REUSE_ALV_GRID_DISPLAY</strong> — grid display</li>
+                    <li><strong>REUSE_ALV_LIST_DISPLAY</strong> — list display</li>
+                    <li><strong>REUSE_ALV_FIELDCATALOG_MERGE</strong> — build field catalog</li>
+                    <li><strong>REUSE_ALV_COMMENTARY_WRITE</strong> — add commentary above/below ALV</li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </details>
+
+          <details class="qa-item">
+            <summary><span class="qa-q-badge">Q</span>What is the difference between Parameter and Select-Options?</summary>
+            <div class="qa-body">
+              <div class="qa-a-row">
+                <span class="qa-a-badge">A</span>
+                <div class="qa-answer-text">
+                  <strong>Parameter</strong>: single value only; typically used to fetch exact record.
+                  <br />
+                  <strong>Select-Options</strong>: supports single, multiple, and ranges; can be left blank to retrieve all data; creates a range table (SIGN/OPTION/LOW/HIGH).
+                </div>
+              </div>
+            </div>
+          </details>
+
+          <details class="qa-item">
+            <summary><span class="qa-q-badge">Q</span>What are Control Level Events (AT Events)? Explain AT FIRST, AT NEW, AT LAST, AT END OF.</summary>
+            <div class="qa-body">
+              <div class="qa-a-row">
+                <span class="qa-a-badge">A</span>
+                <div class="qa-answer-text">
+                  Control level events process grouped data within a LOOP on a sorted internal table.
+                  <ul>
+                    <li><strong>AT FIRST</strong>: runs only for first record</li>
+                    <li><strong>AT NEW &lt;field&gt;</strong>: runs when value of the field changes</li>
+                    <li><strong>AT END OF &lt;field&gt;</strong>: runs at end of a group for that field</li>
+                    <li><strong>AT LAST</strong>: runs only for last record</li>
+                  </ul>
+                  Used for group headers, subtotals, and group footers.
+                </div>
+              </div>
+            </div>
+          </details>
+
+          <details class="qa-item">
+            <summary><span class="qa-q-badge">Q</span>What is SY-SUBRC? What value does it hold on success?</summary>
+            <div class="qa-body">
+              <div class="qa-a-row">
+                <span class="qa-a-badge">A</span>
+                <div class="qa-answer-text">
+                  <strong>SY-SUBRC</strong> is the return code of the last ABAP statement.
+                  <strong>0</strong> indicates success. Non-zero means not successful (e.g., not found, failed check, etc.).
+                </div>
+              </div>
+            </div>
+          </details>
+
+          <details class="qa-item">
+            <summary><span class="qa-q-badge">Q</span>What are Variants in SAP ABAP?</summary>
+            <div class="qa-body">
+              <div class="qa-a-row">
+                <span class="qa-a-badge">A</span>
+                <div class="qa-answer-text">
+                  Variants save selection-screen inputs (values, ranges, checkboxes) so they can be reused. Very important for background/scheduled jobs where manual input is not possible.
+                </div>
+              </div>
+            </div>
+          </details>
+
+          <details class="qa-item">
+            <summary><span class="qa-q-badge">Q</span>What are the data types in SAP ABAP?</summary>
+            <div class="qa-body">
+              <div class="qa-a-row">
+                <span class="qa-a-badge">A</span>
+                <div class="qa-answer-text">
+                  <strong>Numeric</strong>: I (integer), F (float), P (packed decimal).
+                  <br /><strong>Character</strong>: C, N, D (date), T (time), X (hex).
+                  <br /><strong>String</strong>: STRING, XSTRING.
+                </div>
+              </div>
+            </div>
+          </details>
+
+          <details class="qa-item">
+            <summary><span class="qa-q-badge">Q</span>What is the difference between Report and Dynpro?</summary>
+            <div class="qa-body">
+              <div class="qa-a-row">
+                <span class="qa-a-badge">A</span>
+                <div class="qa-answer-text">
+                  <strong>Report</strong>: generates a flat list output (WRITE), limited interaction.
+                  <br />
+                  <strong>Dynpro</strong>: interactive screen programming (input fields, buttons, menus) with data flow between screen and program.
+                </div>
+              </div>
+            </div>
+          </details>
+
+          <details class="qa-item">
+            <summary><span class="qa-q-badge">Q</span>What is START-OF-SELECTION event?</summary>
+            <div class="qa-body">
+              <div class="qa-a-row">
+                <span class="qa-a-badge">A</span>
+                <div class="qa-answer-text">
+                  <strong>START-OF-SELECTION</strong> is the main processing event after selection-screen events are complete. This is where the program fetches data (SELECT), processes it, and writes output. If not coded, ABAP assigns standalone statements to this event by default.
+                </div>
+              </div>
+            </div>
+          </details>
+
+          <details class="qa-item">
+            <summary><span class="qa-q-badge">Q</span>What is the use of AT LINE-SELECTION event?</summary>
+            <div class="qa-body">
+              <div class="qa-a-row">
+                <span class="qa-a-badge">A</span>
+                <div class="qa-answer-text">
+                  Triggered when the user double-clicks a line in the primary list. Commonly used to fetch additional details and display a secondary list. Useful system fields: <strong>SY-LILLI</strong> (selected line number), <strong>SY-LISEL</strong> (selected line content).
+                </div>
+              </div>
+            </div>
+          </details>
         </div>
       </div>
 
